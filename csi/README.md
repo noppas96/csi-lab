@@ -57,3 +57,9 @@ service Node {
 **NodeGetCapabilities:** Just like ControllerGetCapabilities, this returns the capabilities of the Node plugin. For example if you don’t advertise RPC_STAGE_UNSTAGE_VOLUME capability, the CO will not call NodeStageVolume and NodeUnstageVolume as you don’t provide it.
 
 [Ref. CSI Repo](https://github.com/container-storage-interface/spec)
+
+# Simple CSI 
+
+
+
+[Ref. Simple CSI Test](https://github.com/kubernetes-csi/csi-test/tree/master/pkg/sanity)
