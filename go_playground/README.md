@@ -30,3 +30,7 @@ Result should be like this
 ```
 {Muang Surathani 84000}
 ```
+Access fields of a struct 
+```
+fmt.Println(a.Name)
+```
