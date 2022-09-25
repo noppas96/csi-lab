@@ -215,7 +215,9 @@ client.NotifyRegistrationStatus(ctx, &registerapi.RegistrationStatus{
 ...
 })
 ```
+# Reference
 
+- [Golang package csi](https://pkg.go.dev/github.com/container-storage-interface/spec/lib/go)
 
-[REF. Plugin Watcher Utility](https://github.com/kubernetes/community/blob/d051d03b66c139d457f68dc10dab3db1367864bb/contributors/design-proposals/node/plugin-watcher.md#model-2-kubelet-watches-new-plugins-under-a-canonical-path-through-inotify-preferred-one-and-current-implementation)
+- [Plugin Watcher Utility](https://github.com/kubernetes/community/blob/d051d03b66c139d457f68dc10dab3db1367864bb/contributors/design-proposals/node/plugin-watcher.md#model-2-kubelet-watches-new-plugins-under-a-canonical-path-through-inotify-preferred-one-and-current-implementation)
 
