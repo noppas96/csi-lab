@@ -2,6 +2,76 @@
 
 <p align="center"><img src="images/fig1.png" /></p>
 
+##  RPC Service
+
+ - identity Service
+	- GetPluginInfo
+	- GetPluginCapabilities
+	- Probe
+ - Controller Service
+	- ControllerGetCapabilities
+	- CreateVolume/DeleteVolume
+	- ControllerPublishVolume/ControllerUnpublishVolume
+- Node Service
+	- NodeGetCapabilities
+	- NodeGetInfo
+	- NodeStageVolume/NodeUnstageVolume
+	- NodePublishVolume/NodeUnpublishVolume
+
+## How CSI work with Kubernetes
+
+### Kind CSIDriver (Example)
+```
+apiVersion: storage.k8s.io/v1beta1
+kind: CSIDriver
+metadata:
+  name: mycsidriver.example.com
+spec:
+  attachRequired: true
+  podInfoOnMount: true
+```
+### Kind StorageClass (Example)
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: my-csi-storage
+provisioner: mycsidriver.example.com
+parameters:
+  csi.storage.k8s.io/fstype: ext4
+  csi.storage.k8s.io/provisioner-secret-name: mysecret
+  csi.storage.k8s.io/provisioner-secret-namespace: mynamespace
+```
+### kind PersistentVolumeClaim (Example)
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: foo-pvc
+  namespace: foo
+spec:
+  storageClassName: ""
+  volumeName: foo-pv
+```
+### VolumeSnapshotClass (Example)
+```
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshotClass
+metadata:
+  name: my-csi-snapclass
+snapshotter: mycsidriver.example.com
+```
+```
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshot
+metadata:
+  name: snapshot-csi-pod-pvc
+spec:
+  snapshotClassName: my-csi-snapclass
+  source:
+    name: csi-pod-pvc
+    kind: PersistentVolumeClaim
+```
 # Plugin Registration Mechanism (Plugin Watcher Utility)
 
 ## General Requirements
