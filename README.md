@@ -2,7 +2,7 @@
 
 <p align="center"><img src="images/fig1.png" /></p>
 
-##  RPC Service
+##  gRPC Service
 
  - identity Service
 	- GetPluginInfo
