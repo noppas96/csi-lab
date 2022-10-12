@@ -1,4 +1,4 @@
-# CSI Kubernetes
+# Kubernetes and CSI
 
 <p align="center"><img src="images/k8s-csi-fig1.png" /></p>
 
@@ -20,6 +20,8 @@
 
 - livenessprobe
     - May be included in a CSI plugin pod to enable the Kubernetes Liveness Probe mechanism
+
+# CSI Driver NFS
 
 # REF.
 - [Kubernetes CSI NFS](https://github.com/kubernetes-csi/csi-driver-nfs)
