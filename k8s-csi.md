@@ -49,7 +49,7 @@
     - getVolumeIDFromNfsVol
     - getNfsVolFromID
     - isValidVolumeCapabilities
-- nodesserver
+- nodeserver
     - NodePublishVolume
     - NodeUnpublishVolume
     - NodeGetInfo
@@ -58,11 +58,15 @@
     - NodeUnstageVolume
     - NodeExpandVolume
     - makeDir
+# Communication Channels
 
+**Kubelet to CSI Driver Communication**
+
+Kubelet (responsible for mount and unmount) 
 # REF.
 - [Kubernetes CSI NFS](https://github.com/kubernetes-csi/csi-driver-nfs)
 - [CSI Design proposals](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md#topology-representation-in-node-objects)
 - [Node Driver Registrar](https://github.com/kubernetes-csi/node-driver-registrar/blob/master/README.md)
 - [Kubelet Plugin Registration Mechanism](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#device-plugin-registration)
 - [Get to Know Container Storage Interface (CSI)](https://www.alibabacloud.com/blog/get-to-know-container-storage-interface-csi_598094)
--
+-[]
