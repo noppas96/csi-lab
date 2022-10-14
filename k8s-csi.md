@@ -23,6 +23,42 @@
 
 # CSI Driver NFS
 
+- identityserver
+    - GetPluginInfo
+    - Probe
+    - GetPluginCapabilities
+- controllerserver
+    - CreateVolume
+    - DeleteVolume
+    - ControllerPublishVolume
+    - ControllerUnpublishVolume
+    - ControllerGetVolume
+    - ValidateVolumeCapabilities
+    - ListVolumes
+    - GetCapacity
+    - ControllerGetCapabilities
+    - CreateSnapshot
+    - DeleteSnapshot
+    - ListSnapshots
+    - ControllerExpandVolume
+    - internalMount
+    - internalUnmount
+    - newNFSVolume
+    - getInternalMountPath
+    - getInternalVolumePath
+    - getVolumeIDFromNfsVol
+    - getNfsVolFromID
+    - isValidVolumeCapabilities
+- nodesserver
+    - NodePublishVolume
+    - NodeUnpublishVolume
+    - NodeGetInfo
+    - NodeGetCapabilities
+    - NodeGetVolumeStats
+    - NodeUnstageVolume
+    - NodeExpandVolume
+    - makeDir
+
 # REF.
 - [Kubernetes CSI NFS](https://github.com/kubernetes-csi/csi-driver-nfs)
 - [CSI Design proposals](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md#topology-representation-in-node-objects)
