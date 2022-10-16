@@ -1,7 +1,9 @@
 # Kubernetes and CSI
 
 <p align="center"><img src="images/k8s-csi-fig1.png" /></p>
+<center>Fig.1</center> 
 <p align="center"><img src="images/k8s-csi-fig2.png" /></p>
+<center>Fig.2</center>
 
 
 - external-attacher 
