@@ -1,6 +1,7 @@
 # Kubernetes and CSI
 
 <p align="center"><img src="images/k8s-csi-fig1.png" /></p>
+<p align="center"><img src="images/k8s-csi-fig2.png" /></p>
 
 
 - external-attacher 
@@ -62,7 +63,11 @@
 
 **Kubelet to CSI Driver Communication**
 
-Kubelet (responsible for mount and unmount) 
+Kubelet (responsible for mount and unmount)
+
+**Master to CSI Driver Communication**
+
+Kube controller manager (responsible for create, delete, attach, and detach)
 # REF.
 - [Kubernetes CSI NFS](https://github.com/kubernetes-csi/csi-driver-nfs)
 - [CSI Design proposals](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md#topology-representation-in-node-objects)
