@@ -122,3 +122,4 @@ Node-Driver-Registrar implements CSI plug-in registration
 - [Kubelet Plugin Registration Mechanism](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#device-plugin-registration)
 - [Get to Know Container Storage Interface (CSI)](https://www.alibabacloud.com/blog/get-to-know-container-storage-interface-csi_598094)
 - [Storage Architecture](https://www.alibabacloud.com/blog/596307)
+- [Container Storage and Kubernetes Storage Volumes](https://www.alibabacloud.com/blog/cloud-native-storage-container-storage-and-kubernetes-storage-volumes_597243)
