@@ -1,193 +1,40 @@
-# CSI Create Volume
+# CSI NFS
 
-controllerserver.go
+CSI driver is typically deployed in Kubernetes as two components: a controller component and a per-node component.
 
-```go
-// DriverOptions defines driver parameters specified in driver deployment
-type DriverOptions struct {
-	NodeID           string
-	DriverName       string
-	Endpoint         string
-	MountPermissions uint64
-	WorkingMountDir  string
-}
+# Install the CSI driver for NFS
 
-type Driver struct {
-	name             string
-	nodeID           string
-	version          string
-	endpoint         string
-	mountPermissions uint64
-	workingMountDir  string
+1. which, deploy successful, should get csi-controller, csi -node pod, and csidrivers.kubernetes.resource, when we use kubectl get csidrivers result should be like this nfs.csi.k8s.io
 
-	//ids *identityServer
-	ns          *NodeServer
-	cscap       []*csi.ControllerServiceCapability
-	nscap       []*csi.NodeServiceCapability
-	volumeLocks *VolumeLocks
-}
+2. Create a Kubernetes Storage Class that uses the nfs.csi.k8s.io CSI driver. Assuming you have configured an NFS share /srv/nfs and the address of your NFS server is 10.0.0.42
 
-const (
-	DefaultDriverName = "nfs.csi.k8s.io"
-	// Address of the NFS server
-	paramServer = "server"
-	// Base directory of the NFS server to create volumes under.
-	// The base directory must be a direct child of the root directory.
-	// The root directory is omitted from the string, for example:
-	//     "base" instead of "/base"
-	paramShare            = "share"
-	paramSubDir           = "subdir"
-	mountOptionsField     = "mountoptions"
-	mountPermissionsField = "mountpermissions"
-	pvcNameKey            = "csi.storage.k8s.io/pvc/name"
-	pvcNamespaceKey       = "csi.storage.k8s.io/pvc/namespace"
-	pvNameKey             = "csi.storage.k8s.io/pv/name"
-	pvcNameMetadata       = "${pvc.metadata.name}"
-	pvcNamespaceMetadata  = "${pvc.metadata.namespace}"
-	pvNameMetadata        = "${pv.metadata.name}"
-)
-
-func (cs *ControllerServer) CreateVolume(ctx context.Context, req *csi.CreateVolumeRequest) (*csi.CreateVolumeResponse, error)
-
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 10.0.0.42
+  share: /srv/nfs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  - nfsvers=4.1
 ```
 
-nfs.go
+3. create a new PersistentVolumeClaim using the nfs-csi storage class. This is as simple as specifying storageClassName: nfs-csi in the PVC definition
 
-```go
-package nfs
-
-import (
-	"strings"
-
-	"github.com/container-storage-interface/spec/lib/go/csi"
-	"k8s.io/klog/v2"
-	mount "k8s.io/mount-utils"
-)
-
-// DriverOptions defines driver parameters specified in driver deployment
-type DriverOptions struct {
-	NodeID           string
-	DriverName       string
-	Endpoint         string
-	MountPermissions uint64
-	WorkingMountDir  string
-}
-
-type Driver struct {
-	name             string
-	nodeID           string
-	version          string
-	endpoint         string
-	mountPermissions uint64
-	workingMountDir  string
-
-	//ids *identityServer
-	ns          *NodeServer
-	cscap       []*csi.ControllerServiceCapability
-	nscap       []*csi.NodeServiceCapability
-	volumeLocks *VolumeLocks
-}
-
-const (
-	DefaultDriverName = "nfs.csi.k8s.io"
-	// Address of the NFS server
-	paramServer = "server"
-	// Base directory of the NFS server to create volumes under.
-	// The base directory must be a direct child of the root directory.
-	// The root directory is omitted from the string, for example:
-	//     "base" instead of "/base"
-	paramShare            = "share"
-	paramSubDir           = "subdir"
-	mountOptionsField     = "mountoptions"
-	mountPermissionsField = "mountpermissions"
-	pvcNameKey            = "csi.storage.k8s.io/pvc/name"
-	pvcNamespaceKey       = "csi.storage.k8s.io/pvc/namespace"
-	pvNameKey             = "csi.storage.k8s.io/pv/name"
-	pvcNameMetadata       = "${pvc.metadata.name}"
-	pvcNamespaceMetadata  = "${pvc.metadata.namespace}"
-	pvNameMetadata        = "${pv.metadata.name}"
-)
-
-func NewDriver(options *DriverOptions) *Driver {
-	klog.V(2).Infof("Driver: %v version: %v", options.DriverName, driverVersion)
-
-	n := &Driver{
-		name:             options.DriverName,
-		version:          driverVersion,
-		nodeID:           options.NodeID,
-		endpoint:         options.Endpoint,
-		mountPermissions: options.MountPermissions,
-		workingMountDir:  options.WorkingMountDir,
-	}
-
-	n.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{
-		csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME,
-		csi.ControllerServiceCapability_RPC_SINGLE_NODE_MULTI_WRITER,
-	})
-
-	n.AddNodeServiceCapabilities([]csi.NodeServiceCapability_RPC_Type{
-		csi.NodeServiceCapability_RPC_GET_VOLUME_STATS,
-		csi.NodeServiceCapability_RPC_SINGLE_NODE_MULTI_WRITER,
-		csi.NodeServiceCapability_RPC_UNKNOWN,
-	})
-	n.volumeLocks = NewVolumeLocks()
-	return n
-}
-
-func NewNodeServer(n *Driver, mounter mount.Interface) *NodeServer {
-	return &NodeServer{
-		Driver:  n,
-		mounter: mounter,
-	}
-}
-
-func (n *Driver) Run(testMode bool) {
-	versionMeta, err := GetVersionYAML(n.name)
-	if err != nil {
-		klog.Fatalf("%v", err)
-	}
-	klog.V(2).Infof("\nDRIVER INFORMATION:\n-------------------\n%s\n\nStreaming logs below:", versionMeta)
-
-	n.ns = NewNodeServer(n, mount.New(""))
-	s := NewNonBlockingGRPCServer()
-	s.Start(n.endpoint,
-		NewDefaultIdentityServer(n),
-		// NFS plugin has not implemented ControllerServer
-		// using default controllerserver.
-		NewControllerServer(n),
-		n.ns,
-		testMode)
-	s.Wait()
-}
-
-func (n *Driver) AddControllerServiceCapabilities(cl []csi.ControllerServiceCapability_RPC_Type) {
-	var csc []*csi.ControllerServiceCapability
-	for _, c := range cl {
-		csc = append(csc, NewControllerServiceCapability(c))
-	}
-	n.cscap = csc
-}
-
-func (n *Driver) AddNodeServiceCapabilities(nl []csi.NodeServiceCapability_RPC_Type) {
-	var nsc []*csi.NodeServiceCapability
-	for _, n := range nl {
-		nsc = append(nsc, NewNodeServiceCapability(n))
-	}
-	n.nscap = nsc
-}
-
-func IsCorruptedDir(dir string) bool {
-	_, pathErr := mount.PathExists(dir)
-	return pathErr != nil && mount.IsCorruptedMnt(pathErr)
-}
-
-// replaceWithMap replace key with value for str
-func replaceWithMap(str string, m map[string]string) string {
-	for k, v := range m {
-		if k != "" {
-			str = strings.ReplaceAll(str, k, v)
-		}
-	}
-	return str
-}
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  storageClassName: nfs-csi
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
 ```
