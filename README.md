@@ -1,6 +1,6 @@
 # Storage Type
 
-<p align="center"><img src="images/README-1.svg" /></p>
+<p align="center"><img src="images/README-1.png" /></p>
 
 1. Ephemeral 
 2. NAS Storage / FileStorage (SMB, NFS, AFS)
