@@ -27,20 +27,24 @@ This service needs to be implemented for each individual plugin.For example, if 
 ## Volume Life Cycle
 
 <p align="center"><img src="images/volumelifecycle/fig1.png" /></p>
+
 Fig.1 The lifecycle of a dynamically provisioned volume, from
 creation to destruction.
 
 <p align="center"><img src="images/volumelifecycle/fig2.png" /></p>
+
 Fig.2 The lifecycle of a dynamically provisioned volume, from
 creation to destruction, when the Node Plugin advertises the
 STAGE_UNSTAGE_VOLUME capability.
 
 <p align="center"><img src="images/volumelifecycle/fig3.png" /></p>
+
 Fig.3 The lifecycle of a pre-provisioned volume that requires
 controller to publish to a node (`ControllerPublishVolume`) prior to
 publishing on the node (`NodePublishVolume`).
 
 <p align="center"><img src="images/volumelifecycle/fig4.png" /></p>
+
 Fig.4 Plugins MAY forego other lifecycle steps by contraindicating
 them via the capabilities API. Interactions with the volumes of such
 plugins is reduced to `NodePublishVolume` and `NodeUnpublishVolume`
