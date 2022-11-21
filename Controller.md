@@ -1,6 +1,6 @@
 # Controller 
 
-## Create Volume 
+## Protobuf
 
 ```protobuf
 message CreateVolumeRequest {
@@ -448,4 +448,38 @@ message Topology {
   map<string, string> segments = 1;
 }
 }
+```
+
+## Go (.pb.go)
+
+- Create Volume
+```go
+type CreateVolumeRequest struct {
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    CapacityRange *CapacityRange `protobuf:"bytes,2,opt,name=capacity_range,json=capacityRange,proto3" json:"capacity_range,omitempty"`
+    VolumeCapabilities []*VolumeCapability `protobuf:"bytes,3,rep,name=volume_capabilities,json=volumeCapabilities,proto3" json:"volume_capabilities,omitempty"`
+    Parameters map[string]string `protobuf:"bytes,4,rep,name=parameters,proto3" json:"parameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+    Secrets map[string]string `protobuf:"bytes,5,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+    VolumeContentSource *VolumeContentSource `protobuf:"bytes,6,opt,name=volume_content_source,json=volumeContentSource,proto3" json:"volume_content_source,omitempty"`
+    AccessibilityRequirements *TopologyRequirement `protobuf:"bytes,7,opt,name=accessibility_requirements,json=accessibilityRequirements,proto3" json:"accessibility_requirements,omitempty"`
+    XXX_NoUnkeyedLiteral      struct{}             `json:"-"`
+    XXX_unrecognized          []byte               `json:"-"`
+    XXX_sizecache             int32                `json:"-"`
+    
+func (*CreateVolumeRequest) Descriptor() ([]byte, []int)
+func (m *CreateVolumeRequest) GetAccessibilityRequirements() *TopologyRequirement
+func (m *CreateVolumeRequest) GetCapacityRange() *CapacityRange
+func (m *CreateVolumeRequest) GetName() string
+func (m *CreateVolumeRequest) GetParameters() map[string]string
+func (m *CreateVolumeRequest) GetSecrets() map[string]string
+func (m *CreateVolumeRequest) GetVolumeCapabilities() []*VolumeCapability
+func (m *CreateVolumeRequest) GetVolumeContentSource() *VolumeContentSource
+func (*CreateVolumeRequest) ProtoMessage()
+func (m *CreateVolumeRequest) Reset()
+func (m *CreateVolumeRequest) String() string
+func (m *CreateVolumeRequest) XXX_DiscardUnknown()
+func (m *CreateVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
+func (m *CreateVolumeRequest) XXX_Merge(src proto.Message)
+func (m *CreateVolumeRequest) XXX_Size() int
+func (m *CreateVolumeRequest) XXX_Unmarshal(b []byte) error
 ```
