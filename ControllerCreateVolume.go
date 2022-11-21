@@ -51,7 +51,7 @@ var VolumeCapability_AccessMode_Mode_value = map[string]int32{
 }
 
 type Topology struct {
-	Segments             map[string]string `protobuf:"bytes,1,rep,name=segments,proto3" json:"segments,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Segments             map[string]string `protobuf:"bytes,1,rep,name=segments,proto3" 		json:"segments,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -66,7 +66,7 @@ type VolumeContentSource struct {
 
 type VolumeCapability struct {
 	AccessType           isVolumeCapability_AccessType `protobuf_oneof:"access_type"`
-	AccessMode           *VolumeCapability_AccessMode  `protobuf:"bytes,3,opt,name=access_mode,json=accessMode,proto3" 		json:"access_mode,omitempty"`
+	AccessMode           *VolumeCapability_AccessMode  `protobuf:"bytes,3,opt,name=access_mode,json=accessMode,proto3"		json:"access_mode,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
 	XXX_unrecognized     []byte                        `json:"-"`
 	XXX_sizecache        int32                         `json:"-"`
@@ -74,7 +74,7 @@ type VolumeCapability struct {
 
 type CapacityRange struct {
 	RequiredBytes        int64    `protobuf:"varint,1,opt,name=required_bytes,json=requiredBytes,proto3"		json:"required_bytes,omitempty"`
-	LimitBytes           int64    `protobuf:"varint,2,opt,name=limit_bytes,json=limitBytes,proto3"				json:"limit_bytes,omitempty"`
+	LimitBytes           int64    `protobuf:"varint,2,opt,name=limit_bytes,json=limitBytes,proto3"			json:"limit_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -89,13 +89,13 @@ type TopologyRequirement struct {
 }
 
 type CreateVolumeRequest struct {
-	Name                      string               `protobuf:"bytes,1,opt,name=name,proto3" 													 json:"name,omitempty"`
-	CapacityRange             *CapacityRange       `protobuf:"bytes,2,opt,name=capacity_range,json=capacityRange,proto3" 						 json:"capacity_range,omitempty"`
-	VolumeCapabilities        []*VolumeCapability  `protobuf:"bytes,3,rep,name=volume_capabilities,json=volumeCapabilities,proto3" 			   	 json:"volume_capabilities,omitempty"`
-	Parameters                map[string]string    `protobuf:"bytes,4,rep,name=parameters,proto3" 											     json:"parameters,omitempty" 			protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Secrets                   map[string]string    `protobuf:"bytes,5,rep,name=secrets,proto3" 												     json:"secrets,omitempty" 				protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	VolumeContentSource       *VolumeContentSource `protobuf:"bytes,6,opt,name=volume_content_source,json=volumeContentSource,proto3" 		   	 json:"volume_content_source,omitempty"`
-	AccessibilityRequirements *TopologyRequirement `protobuf:"bytes,7,opt,name=accessibility_requirements,json=accessibilityRequirements,proto3" json:"accessibility_requirements,omitempty"`
+	Name                      string               `protobuf:"bytes,1,opt,name=name,proto3" 								json:"name,omitempty"`
+	CapacityRange             *CapacityRange       `protobuf:"bytes,2,opt,name=capacity_range,json=capacityRange,proto3" 					json:"capacity_range,omitempty"`
+	VolumeCapabilities        []*VolumeCapability  `protobuf:"bytes,3,rep,name=volume_capabilities,json=volumeCapabilities,proto3" 			   	json:"volume_capabilities,omitempty"`
+	Parameters                map[string]string    `protobuf:"bytes,4,rep,name=parameters,proto3" 								json:"parameters,omitempty" 			protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Secrets                   map[string]string    `protobuf:"bytes,5,rep,name=secrets,proto3" 								json:"secrets,omitempty" 			protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	VolumeContentSource       *VolumeContentSource `protobuf:"bytes,6,opt,name=volume_content_source,json=volumeContentSource,proto3" 		   	json:"volume_content_source,omitempty"`
+	AccessibilityRequirements *TopologyRequirement `protobuf:"bytes,7,opt,name=accessibility_requirements,json=accessibilityRequirements,proto3" 		json:"accessibility_requirements,omitempty"`
 	XXX_NoUnkeyedLiteral      struct{}             `json:"-"`
 	XXX_unrecognized          []byte               `json:"-"`
 	XXX_sizecache             int32                `json:"-"`
