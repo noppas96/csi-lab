@@ -465,7 +465,7 @@ type CreateVolumeRequest struct {
     XXX_NoUnkeyedLiteral      struct{}             `json:"-"`
     XXX_unrecognized          []byte               `json:"-"`
     XXX_sizecache             int32                `json:"-"`
-    
+
 func (*CreateVolumeRequest) Descriptor() ([]byte, []int)
 func (m *CreateVolumeRequest) GetAccessibilityRequirements() *TopologyRequirement
 func (m *CreateVolumeRequest) GetCapacityRange() *CapacityRange
@@ -482,4 +482,36 @@ func (m *CreateVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 func (m *CreateVolumeRequest) XXX_Merge(src proto.Message)
 func (m *CreateVolumeRequest) XXX_Size() int
 func (m *CreateVolumeRequest) XXX_Unmarshal(b []byte) error
+```
+
+- PublishVolume
+
+```go
+type ControllerPublishVolumeRequest struct {
+    VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+    NodeId string `protobuf:"bytes,2,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+    VolumeCapability *VolumeCapability `protobuf:"bytes,3,opt,name=volume_capability,json=volumeCapability,proto3" json:"volume_capability,omitempty"`
+    Readonly bool `protobuf:"varint,4,opt,name=readonly,proto3" json:"readonly,omitempty"`
+    Secrets map[string]string `protobuf:"bytes,5,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+    VolumeContext        map[string]string `protobuf:"bytes,6,rep,name=volume_context,json=volumeContext,proto3" json:"volume_context,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+    XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+    XXX_unrecognized     []byte            `json:"-"`
+    XXX_sizecache        int32             `json:"-"`
+
+type ControllerPublishVolumeRequest
+func (*ControllerPublishVolumeRequest) Descriptor() ([]byte, []int)
+func (m *ControllerPublishVolumeRequest) GetNodeId() string
+func (m *ControllerPublishVolumeRequest) GetReadonly() bool
+func (m *ControllerPublishVolumeRequest) GetSecrets() map[string]string
+func (m *ControllerPublishVolumeRequest) GetVolumeCapability() *VolumeCapability
+func (m *ControllerPublishVolumeRequest) GetVolumeContext() map[string]string
+func (m *ControllerPublishVolumeRequest) GetVolumeId() string
+func (*ControllerPublishVolumeRequest) ProtoMessage()
+func (m *ControllerPublishVolumeRequest) Reset()
+func (m *ControllerPublishVolumeRequest) String() string
+func (m *ControllerPublishVolumeRequest) XXX_DiscardUnknown()
+func (m *ControllerPublishVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
+func (m *ControllerPublishVolumeRequest) XXX_Merge(src proto.Message)
+func (m *ControllerPublishVolumeRequest) XXX_Size() int
+func (m *ControllerPublishVolumeRequest) XXX_Unmarshal(b []byte) error
 ```
