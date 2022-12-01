@@ -24,6 +24,15 @@ If the volumes are part of a Cloud Provider (such as DigitalOcean, GKE, AWS), th
 
 This service needs to be implemented for each individual plugin.For example, if you have two separate plugins running, Node and Controller, both binaries  need to implement the Identity gRPC interface individually.
 
+## driver-registrar  
+Sidecar container that registers the CSI driver with kubelet, and adds  the drivers custom NodeId to a label on the Kubernetes Node API Object.
+
+## external-provisioner 
+
+Sidecar container that watches Kubernetes PersistentVolumeClaim objects and triggers CreateVolume/DeleteVolume against a CSI endpoint.
+
+## external-attacher  
+Sidecar container that watches Kubernetes VolumeAttachment objects and triggers ControllerPublish/Unpublish against a CSI endpoint
 ## Volume Life Cycle
 
 <p align="center"><img src="images/volumelifecycle/fig1.png" /></p>
@@ -49,12 +58,9 @@ Fig.4 Plugins MAY forego other lifecycle steps by contraindicating
 them via the capabilities API. Interactions with the volumes of such
 plugins is reduced to `NodePublishVolume` and `NodeUnpublishVolume`
 calls.
+# CSI Volume Snapshots
 
-# CSI Volume
-
-## CSI Volume Snapshots
-
-A snapshot represents the state of the storage volume in a cluster at a particular point in time. Volume snapshots can be used to provision a new volume.
+A snapshot represents the state of the storage volume in a cluster at a particular point in time. Volume snapshots can be used to provision a new volume. volume snapshots with supported Container Storage Interface (CSI) drivers to help protect against data loss
 
 With CSI volume snapshots, a cluster administrator can:
 - Deploy a third-party CSI driver that supports snapshots.  
