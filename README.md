@@ -1,6 +1,7 @@
 # DotGit
 
 FETCH_HEAD (FILE)
+
 ```
 Example
 
@@ -51,7 +52,9 @@ exlude(file)
 # *~
 ```
 log(DIR)
+
 objects(DIR)
+Objects folder is a very important folder in the .git directory. In Git, everything is saved in the objects folder as a hash value.By everything every commit, every tree or every file that you create is saved in this directory. With every object, there is a hash value linked to it, through which Git knows where is what.
 - info(DIR)
 - pack(DIR)
 packed-refs
